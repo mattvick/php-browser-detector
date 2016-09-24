@@ -2,14 +2,17 @@
 
 namespace Sinergi\BrowserDetector;
 
-class Device
+class MobileDevice
 {
     const UNKNOWN = 'unknown';
 
-    const IPOD = 'iPod';
     const IPAD = 'iPad';
     const IPHONE = 'iPhone';
     const WINDOWS_PHONE = 'Windows Phone';
+    const ANDROID = 'Android';
+    const GOOGLE_TV = 'Google TV';
+    const SYMBIAN = 'Symbian';
+    const BLACKBERRY = 'Blackberry';
 
     /**
      * @var string
@@ -63,7 +66,7 @@ class Device
     public function getName()
     {
         if (!isset($this->name)) {
-            DeviceDetector::detect($this, $this->getUserAgent());
+            MobileDeviceDetector::detect($this, $this->getUserAgent());
         }
 
         return $this->name;

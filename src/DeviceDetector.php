@@ -16,10 +16,29 @@ class DeviceDetector implements DetectorInterface
         $device->setName($device::UNKNOWN);
 
         return (
+            self::checkIpod($device, $userAgent) ||
             self::checkIpad($device, $userAgent) ||
             self::checkIphone($device, $userAgent) ||
+            self::checkBlackberry($device, $userAgent) ||
             self::checkWindowsPhone($device, $userAgent)
         );
+    }
+
+    /**
+     * Determine if the device is iPod.
+     *
+     * @param Device $device
+     * @param UserAgent $userAgent
+     * @return bool
+     */
+    private static function checkIpad(Device $device, UserAgent $userAgent)
+    {
+        if (stripos($userAgent->getUserAgentString(), 'ipod') !== false) {
+            $device->setName(Device::IPOD);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,6 +72,23 @@ class DeviceDetector implements DetectorInterface
             return true;
         }
 
+        return false;
+    }
+
+    /**
+     * Determine if the device is Blackberry.
+     *
+     * @param Device $device
+     * @param UserAgent $userAgent
+     * @return bool
+     */
+    private static function checkBlackberry(Device $device, UserAgent $userAgent)
+    {
+        $agt = $userAgent->getUserAgentString();
+        if (stripos($agt, 'blackberry') !== false || stripos($agt, 'vnd.rim') !== false || stripos($agt, 'bb10') !== false) {
+            $device->setName($device::WINDOWS_PHONE);
+            return true;
+        }
         return false;
     }
 
